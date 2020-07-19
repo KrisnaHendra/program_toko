@@ -2,22 +2,27 @@
                     <!-- Dynamic Table Full -->
                     <div class="block">
                         <div class="block-header">
-                            <h3 class="block-title">History Transaksi <small>Cahaya Titan</small></h3>
-                            <a href="<?=base_url('transaksi/hapus_history')?>" class="btn btn-sm btn-danger" onClick="return confirm('Anda yakin ingin menghapus semua history pembelian?')"><i class="fa fa-trash-alt mr-1"></i>HAPUS HISTORY</a>
+                            <h3 class="block-title">History Transaksi Cahaya Titan <small><?= date('d F Y') ?></small></h3>
+                            <a href="<?=base_url('transaksi/hapus_history')?>" class="btn btn-sm btn-danger" onClick="return confirm('Anda yakin ingin menghapus semua history pembelian?')" data-toggle="tooltip" title="Hapus Semua History"><i class="fa fa-trash-alt mr-1"></i>HAPUS HISTORY</a>
                         </div>
+                        <hr class="m-0">
                         <div class="block-content block-content-full">
+                          <marquee title="Detail Transaksi" behavior="alternate" onmouseover="this.stop()" onmouseout="this.start()" direction="right">
+                            <a href="#" class="btn btn-dark font-weight-bold"><i class="fa fa-tags"></i> Total Transaksi : <?= $tot_transaksi[0]['total'] ?></a>
+                            <a href="#" class="btn btn-dark font-weight-bold"><i class="fa fa-wallet"></i> Total Pendapatann : Rp. <?= number_format($tot_pendapatan[0]['pendapatan']) ?></a>
+                          </marquee>
                                 <?=$this->session->flashdata('notif');?>
                             <!-- DataTables init on table by adding .js-dataTable-full class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _es6/pages/be_tables_datatables.js -->
-                            <table class="table table-bordered table-hover table-vcenter js-dataTable-full">
+                            <table class="table table-hover table-vcenter js-dataTable-full">
                                 <thead>
-                                    <tr class="text-light" style="background:#6995db">
-                                        <th class="text-center" style="width: 80px;">#</th>
-                                        <th style="">Kode</th>
-                                        <th style="">Nama Kasir</th>
-                                        <th style="">Nama Pembeli</th>
-                                        <th style="">Total</th>
-                                        <th style="">Tanggal</th>
-                                        <th style="width:10px;">Status</th>
+                                    <tr class="text-light bg-success">
+                                        <th class="text-center" style="width: 60px;">#</th>
+                                        <th style="width:17%">Kode</th>
+                                        <th style="width:17%">Nama Kasir</th>
+                                        <th style="width:17%">Nama Pembeli</th>
+                                        <th style="width:20%">Total</th>
+                                        <th style="width:17%">Tanggal</th>
+                                        <th style="width:10px;"><i class="fa fa-check-circle"></i></th>
                                         <!-- <th style="" class="text-center"><i class="fa fa-fw fa-trash"></i></th> -->
 
                                     </tr>
@@ -26,12 +31,12 @@
                                     <?php $no = 1;foreach ($transaksi as $t): ?>
                                     <tr>
                                         <td class="text-center font-size-sm"><?=$no++;?></td>
-                                        <td><a href="" class="font-weight-bold btn btn-sm btn-light text-primary" data-toggle="modal" data-target="#modal-block-large<?=$t['id_transaksi'];?>"><?=$t['invoice']?></a></td>
+                                        <td><a href="" class="font-weight-bold btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#modal-block-large<?=$t['id_transaksi'];?>"><?=$t['invoice']?></a></td>
                                         <td><?=$t['nama_kasir']?></td>
                                         <td><?=$t['nama_pembeli']?></td>
                                         <td>Rp. <?=number_format($t['total'])?></td>
                                         <td><?=date('d M Y', $t['tanggal'])?></td>
-                                        <td class="text-center"><i class="fa fa-check" style="color: blue"></i> </td>
+                                        <td class="text-center"><span class="badge badge-success"><i class="fa fa-check"></i></span></td>
 
                                     </tr>
                                     <?php endforeach;?>

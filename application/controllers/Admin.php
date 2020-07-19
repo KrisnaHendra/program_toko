@@ -11,16 +11,33 @@ public function __construct()
 	if(!isset($data)){
 		redirect('auth');
 	}
-	
+
 }
 
 	public function index()
 	{
 		$data['data']=$this->db->get_where('user',['nama'=>$this->session->userdata('nama')])->row_array();
 		$data['title']='Dashboard';
-        $data['konten']='admin/dashboard';
-        $data['sum']=$this->sum();
-        $data['avg']=$this->avg();
+    $data['konten']='admin/dashboard';
+    $data['sum']=$this->sum();
+    $data['avg']=$this->avg();
+		$data['terlaris'] = $this->db->query("SELECT nama_barang, SUM(jumlah) as total FROM detail_transaksi d JOIN barang b ON d.id_barang = b.id_barang GROUP BY d.id_barang ORDER BY total DESC LIMIT 4")->result_array();
+		$laporanPerBulan = $this->db->query("SELECT tanggal, d.id_barang, SUM(jumlah) as total, DATE_FORMAT(FROM_UNIXTIME(tanggal),'%m') as bulan FROM detail_transaksi d JOIN transaksi t ON d.id_transaksi=t.id_transaksi JOIN barang b ON b.id_barang=d.id_barang WHERE YEAR(DATE_FORMAT(FROM_UNIXTIME(tanggal),'%Y-%m-%d'))= '2020' GROUP BY DATE_FORMAT(FROM_UNIXTIME(tanggal),'%m-%Y')")->result_array();
+		// SELECT tanggal, d.id_barang, SUM(jumlah) as total, DATE_FORMAT(FROM_UNIXTIME(tanggal),'%m-%Y') as periode FROM detail_transaksi d JOIN transaksi t ON d.id_transaksi=t.id_transaksi JOIN barang b ON b.id_barang=d.id_barang WHERE YEAR(DATE_FORMAT(FROM_UNIXTIME(tanggal),'%Y-%m-%d'))= '2020' GROUP BY DATE_FORMAT(FROM_UNIXTIME(tanggal),'%m-%Y')
+		$listBulan = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+		$data['listGrafik'] = [];
+		foreach($laporanPerBulan as $key){
+        $data['listGrafik'][$key['bulan']] = $key['total'];
+    }
+    foreach($data['listGrafik'] as $key => $value){
+      foreach($listBulan as $b){
+        if(!isset($data['listGrafik'][$b])){
+          $data['listGrafik'][$b] = 0;
+        }
+        $data['listGrafik'][$b];
+      }
+      ksort($data['listGrafik']);
+    }
 		$this->load->view('admin/template',$data);
 	}
 
@@ -34,7 +51,7 @@ public function __construct()
 		$data['konten']='admin/data_user';
 		$this->load->view('admin/template', $data);
 	}
-	
+
 	public function delete_user($id){
 		$this->user->delete_user($id);
 		$this->session->set_flashdata('notif', '<div class="alert alert-danger alert-dismissible" role="alert">
@@ -45,7 +62,7 @@ public function __construct()
 	}
 
 	public function add_user(){
-		
+
 		$this->form_validation->set_rules('nama', 'Nama', 'trim|required|is_unique[user.nama]',[
 			'is_unique' => 'Nama sudah terdaftar !'
 		]);
@@ -73,7 +90,7 @@ public function __construct()
 			redirect('admin/data_user');
 		}
 	}
-	
+
 
 	public function note(){
 		$data['data']=$this->db->get_where('user',['nama'=>$this->session->userdata('nama')])->row_array();

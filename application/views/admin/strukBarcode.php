@@ -11,7 +11,7 @@
     <title>Struk</title>
   </head>
   <body>
-    <h1 class="text-center" style="font-size:60px;"><a href="<?= base_url('transaksi/selesai') ?>">CAHAYA TITAN</a></h1>
+    <h1 class="text-center" style="font-size:60px;"><a href="<?= base_url('transaksi/backFromStruk') ?>">CAHAYA TITAN</a></h1>
     <h3 class="text-center">JUAL PAKAN AYAM, DOC, OBAT, VAKSIN/ALAT PETERNAKAN</h3>
     <h3 class="text-center">Desa Pulungdowo - Kec. Tumpang - Kab. Malang</h3>
     <h3 class="text-center">Telp. 0813 3503 4007, 0812 3523 0001</h3>
@@ -50,27 +50,28 @@
             <th style="width:20%;"><h1>Jumlah</h1></th>
             <th style="width:40%;"><h1>Total</h1></th>
         </tr>
-        <?php foreach($this->cart->contents() as $items):?>
+        <?php foreach($data as $d):?>
         <tr class="text-center">
-            <td class=""><p style="font-size:35px;"><?= $items['name'] ?></p></td>
-            <td><p style="font-size:35px;">Rp. <?= number_format($items['price']) ?></p></td>
-            <td><p style="font-size:35px;"><?= $items['qty'] ?></p></td>
-            <td><p style="font-size:35px;">Rp. <?= number_format($items['price']*$items['qty']) ?></p></td>
+            <td class=""><p style="font-size:35px;"><?= $d['nama_barang'] ?></p></td>
+            <td><p style="font-size:35px;">Rp. <?= number_format($d['harga']) ?></p></td>
+            <td><p style="font-size:35px;"><?= $d['jumlah'] ?></p></td>
+            <td><p style="font-size:35px;">Rp. <?= number_format($d['subtotal']) ?></p></td>
         </tr>
         <?php endforeach;?>
 
         <tr class="text-right">
-            <td colspan="4"><h1>Total : Rp. <?= number_format($this->cart->total()) ?></h1></td>
+            <td colspan="4"><h1>Total : Rp. <?= number_format($allTotal[0]['total']) ?></h1></td>
         </tr>
+
     </table>
-    <!-- <h5>==================================================================================</h5> -->
+
     <?php if($catatan==''){?>
     <?php }else{?>
-    <h2>*Catatan (<?= $catatan; ?>).</h2>
+    <h2>NB* : <?= $catatan; ?>.</h2>
     <?php } ?>
     <hr style="border:1px solid black">
-    <h2 class="text-center">Barang yang sudah dibeli tidak dapat ditukar/dikembalikan</h2><br>
-    <h1 class="text-center">~ TERIMA KASIH ~</h1>
+    <h2 class="text-center pb-0">Barang yang sudah dibeli tidak dapat ditukar/dikembalikan</h2><br>
+    <h1 class="text-center pt-0">~ TERIMA KASIH ~</h1>
 
 
     <!-- Optional JavaScript -->
@@ -80,8 +81,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script>
         window.print();
-        target = "_blank";
-        setTimeout(window.close, 0);
+        setTimeout(window.close(), 0);
     </script>
   </body>
 </html>

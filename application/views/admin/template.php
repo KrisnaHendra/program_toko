@@ -34,6 +34,18 @@
         <!-- Fonts and OneUI framework -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
         <link rel="stylesheet" id="css-main" href="<?= base_url('assets/admin/') ?>assets/css/oneui.min.css">
+        <!-- Page JS Plugins CSS -->
+        <link rel="stylesheet" href="<?= base_url('assets/admin/') ?>assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
+        <link rel="stylesheet" href="<?= base_url('assets/admin/') ?>assets/js/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+        <link rel="stylesheet" href="<?= base_url('assets/admin/') ?>assets/js/plugins/select2/css/select2.min.css">
+        <link rel="stylesheet" href="<?= base_url('assets/admin/') ?>assets/js/plugins/ion-rangeslider/css/ion.rangeSlider.css">
+        <link rel="stylesheet" href="<?= base_url('assets/admin/') ?>assets/js/plugins/ion-rangeslider/css/ion.rangeSlider.skinHTML5.css">
+        <link rel="stylesheet" href="<?= base_url('assets/admin/') ?>assets/js/plugins/dropzone/dist/min/dropzone.min.css">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
 
         <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
         <!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/amethyst.min.css"> -->
@@ -234,7 +246,7 @@
                 <div class="content-header bg-white-5">
                     <!-- Logo -->
                     <a class="font-w600 text-dual" href="<?= base_url('admin') ?>">
-                        <i class="fa fa-circle-notch text-primary"></i>
+                        <i class="fa fa-store text-info"></i>
                         <span class="smini-hide">
                             <span class="font-w700 font-size-h5">Cahaya</span> <span class="font-w400">Titan</span>
                         </span>
@@ -345,8 +357,14 @@
                             </a>
                         </li>
                         <li class="nav-main-item">
+                            <a class="nav-main-link" href="<?= base_url('transaksi/trans_otomatis') ?>">
+                                <i class="nav-main-link-icon fa fa-shopping-bag"></i>
+                                <span class="nav-main-link-name">Transaksi Barcode</span>
+                            </a>
+                        </li>
+                        <li class="nav-main-item">
                             <a class="nav-main-link" href="<?= base_url('transaksi/transaksi_do') ?>">
-                                <i class="nav-main-link-icon si si-basket-loaded"></i>
+                                <i class="nav-main-link-icon fa fa-shopping-basket"></i>
                                 <span class="nav-main-link-name">Transaksi DO</span>
                             </a>
                         </li>
@@ -368,13 +386,20 @@
                                 <span class="nav-main-link-name">Catatan</span>
                             </a>
                         </li>
-                        <!-- <li class="nav-main-heading">TERNAK</li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link" href="<?= base_url('laporan') ?>">
+                                <i class="nav-main-link-icon si si-docs"></i>
+                                <span class="nav-main-link-name">Laporan Penjualan</span>
+                            </a>
+                        </li>
+                         <li class="nav-main-heading">TERNAK</li>
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="<?= base_url('ternak/data_pelanggan') ?>">
                                 <i class="nav-main-link-icon si si-users"></i>
                                 <span class="nav-main-link-name">Data Pelanggan</span>
                             </a>
                         </li>
+                        <!--
                         <li class="nav-main-item">
                             <a class="nav-main-link" href="<?= base_url('ternak/transaksi') ?>">
                                 <i class="nav-main-link-icon si si-basket-loaded"></i>
@@ -454,7 +479,14 @@
                             <i class="si si-grid"></i>
                         </button> -->
                         <button type="button" class="btn btn-sm btn-dark mr-2">
-                            <b class="">ADMINISTRATOR</b>
+                            <b style="font-size:12px;">ADMINISTRATOR</b>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-dark mr-2">
+                            <b><i class="fa fa-calendar"></i> <?= date('d F Y') ?></b>
+                            <i class="fa fa-clock"></i>
+                            <span id="jam"></span>
+                            <span id="menit"></span>
+                            <span id="detik"></span>
                         </button>
                         <!-- END Apps Modal -->
 
@@ -505,90 +537,13 @@
                         <!-- END User Dropdown -->
 
                         <!-- Notifications Dropdown -->
-                        <div class="dropdown d-inline-block ml-2">
+                        <!-- <div class="dropdown d-inline-block ml-2">
                             <a href="<?= base_url('transaksi') ?>" class="btn btn-sm btn-dual" id="page-header-notifications-dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="nav-main-link-icon si si-basket-loaded"></i>
                                 <span class="badge badge-primary badge-pill"><?= $this->cart->total_items() ?></span>
                             </a>
-                            <!-- <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0 border-0 font-size-sm" aria-labelledby="page-header-notifications-dropdown">
-                                <div class="p-2 bg-primary text-center">
-                                    <h5 class="dropdown-header text-uppercase text-white">Notifications</h5>
-                                </div>
-                                <ul class="nav-items mb-0">
-                                    <li>
-                                        <a class="text-dark media py-2" href="javascript:void(0)">
-                                            <div class="mr-2 ml-3">
-                                                <i class="fa fa-fw fa-check-circle text-success"></i>
-                                            </div>
-                                            <div class="media-body pr-2">
-                                                <div class="font-w600">You have a new follower</div>
-                                                <small class="text-muted">15 min ago</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="text-dark media py-2" href="javascript:void(0)">
-                                            <div class="mr-2 ml-3">
-                                                <i class="fa fa-fw fa-plus-circle text-info"></i>
-                                            </div>
-                                            <div class="media-body pr-2">
-                                                <div class="font-w600">1 new sale, keep it up</div>
-                                                <small class="text-muted">22 min ago</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="text-dark media py-2" href="javascript:void(0)">
-                                            <div class="mr-2 ml-3">
-                                                <i class="fa fa-fw fa-times-circle text-danger"></i>
-                                            </div>
-                                            <div class="media-body pr-2">
-                                                <div class="font-w600">Update failed, restart server</div>
-                                                <small class="text-muted">26 min ago</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="text-dark media py-2" href="javascript:void(0)">
-                                            <div class="mr-2 ml-3">
-                                                <i class="fa fa-fw fa-plus-circle text-info"></i>
-                                            </div>
-                                            <div class="media-body pr-2">
-                                                <div class="font-w600">2 new sales, keep it up</div>
-                                                <small class="text-muted">33 min ago</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="text-dark media py-2" href="javascript:void(0)">
-                                            <div class="mr-2 ml-3">
-                                                <i class="fa fa-fw fa-user-plus text-success"></i>
-                                            </div>
-                                            <div class="media-body pr-2">
-                                                <div class="font-w600">You have a new subscriber</div>
-                                                <small class="text-muted">41 min ago</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="text-dark media py-2" href="javascript:void(0)">
-                                            <div class="mr-2 ml-3">
-                                                <i class="fa fa-fw fa-check-circle text-success"></i>
-                                            </div>
-                                            <div class="media-body pr-2">
-                                                <div class="font-w600">You have a new follower</div>
-                                                <small class="text-muted">42 min ago</small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="p-2 border-top">
-                                    <a class="btn btn-sm btn-light btn-block text-center" href="javascript:void(0)">
-                                        <i class="fa fa-fw fa-arrow-down mr-1"></i> Load More..
-                                    </a>
-                                </div>
-                            </div> -->
-                        </div>
+
+                        </div> -->
                         <!-- END Notifications Dropdown -->
 
                         <!-- Toggle Side Overlay -->
@@ -754,8 +709,7 @@
         -->
         <script src="<?= base_url('assets/admin/') ?>assets/js/oneui.app.min.js"></script>
 
-        <!-- Page JS Plugins -->
-        <script src="<?= base_url('assets/admin/') ?>assets/js/plugins/chart.js/Chart.bundle.min.js"></script>
+
 
         <!-- Page JS Code -->
         <script src="<?= base_url('assets/admin/') ?>assets/js/pages/be_pages_dashboard.min.js"></script>
@@ -778,5 +732,46 @@
         <script src="<?= base_url('assets/admin/') ?>assets/js/pages/be_tables_datatables.min.js"></script>
         <script src="<?= base_url('assets/admin/') ?>assets/js/pages/be_forms_wizard.min.js"></script>
         <script src="<?= base_url('assets/admin/') ?>assets/js/pages/be_comp_dialogs.min.js"></script>
+        <!-- Page JS Plugins -->
+        <script src="<?= base_url('assets/admin/') ?>assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+        <script src="<?= base_url('assets/admin/') ?>assets/js/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+        <script src="<?= base_url('assets/admin/') ?>assets/js/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+        <script src="<?= base_url('assets/admin/') ?>assets/js/plugins/select2/js/select2.full.min.js"></script>
+        <script src="<?= base_url('assets/admin/') ?>assets/js/plugins/jquery.maskedinput/jquery.maskedinput.min.js"></script>
+        <script src="<?= base_url('assets/admin/') ?>assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js"></script>
+        <script src="<?= base_url('assets/admin/') ?>assets/js/plugins/dropzone/dropzone.min.js"></script>
+
+        <!-- Page JS Helpers (BS Datepicker + BS Colorpicker + BS Maxlength + Select2 + Masked Inputs + Ion Range Slider plugins) -->
+        <script>jQuery(function(){ One.helpers(['datepicker', 'colorpicker', 'maxlength', 'select2', 'masked-inputs', 'rangeslider']); });</script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+        <script>
+        window.setTimeout("waktu()", 1000);
+
+        function waktu() {
+          var waktu = new Date();
+          setTimeout("waktu()", 1000);
+          var jam = waktu.getHours() + "";
+          var menit = waktu.getMinutes() + "";
+          var detik = waktu.getSeconds() + "";
+
+          document.getElementById("jam").innerHTML = (jam.length==1?"0"+jam:jam)+" :";
+          document.getElementById("menit").innerHTML = (menit.length==1?"0"+menit:menit)+" :";
+          document.getElementById("detik").innerHTML = detik.length==1?"0"+detik:detik;
+        }
+        </script>
+
+        <script type="text/javascript">
+            $(function () {
+            $(".monthpicker").datepicker({
+                  format: 'MM yyyy',
+                  viewMode: "months",
+                  minViewMode: "months",
+            }).datepicker('update', new Date());
+            });
+          </script>
+
+
     </body>
 </html>

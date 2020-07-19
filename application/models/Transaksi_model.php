@@ -7,7 +7,7 @@ class Transaksi_model extends CI_Model
     public function index()
     {
         $query = $this->db->query(
-            "SELECT t.kode as invoice,t.*,d.*,b.* FROM transaksi t JOIN detail_transaksi d ON t.id_transaksi=d.id_transaksi JOIN barang b ON b.id_barang = d.id_barang GROUP BY t.kode, d.id_barang"
+            "SELECT t.kode as invoice,t.*,d.*,b.* FROM transaksi t JOIN detail_transaksi d ON t.id_transaksi=d.id_transaksi JOIN barang b ON b.id_barang = d.id_barang GROUP BY t.kode, d.id_barang ORDER BY tanggal DESC"
         )->result_array();
         $listHistory = [];
         foreach ($query as $k => $v) {
@@ -38,18 +38,6 @@ class Transaksi_model extends CI_Model
 
     public function simpan_cart_db($kode, $pembeli)
     {
-        for ($i = 0; $i < count($this->input->post('rowid')); $i++) {
-            $stok = $this->db->where('id_barang', $this->input->post('id_barang')[$i])
-                ->get('barang')
-                ->row()
-                ->stok;
-            $qty = $this->input->post('qty')[$i];
-            $sisa = $stok - $qty;
-            $updatestok = array('stok' => $sisa);
-            $this->db->where('id_barang', $this->input->post('id_barang')[$i])
-                ->update('barang', $updatestok);
-        }
-
         $object = array(
             'kode' => $kode,
             'nama_kasir' => $this->session->userdata('nama'),
@@ -108,6 +96,37 @@ class Transaksi_model extends CI_Model
             'tanggal' => time(),
         ];
         $this->db->insert('transaksi', $telur);
+    }
+
+    public function simpan_cart_barcode($kode, $pembeli){
+      $transaksi = [
+        'kode' => $kode,
+        'nama_kasir' => $this->session->userdata('nama'),
+        'nama_pembeli' => $pembeli,
+        'total' => $this->input->post('allTotal'),
+        'tanggal' => time(),
+      ];
+      $this->db->insert('transaksi',$transaksi);
+      $id_trans = $this->db->query("SELECT id_transaksi FROM transaksi ORDER BY id_transaksi DESC LIMIT 1")->result_array();
+      // print_r($id_trans[0]['id_transaksi']);die;
+      foreach($this->input->post('id') as $key =>$value){
+      $detail[] = [
+        'id_transaksi' => $id_trans[0]['id_transaksi'],
+        'id_barang' => $this->input->post('id_barang')[$key],
+        'jumlah' => $this->input->post('jumlah')[$key]
+      ];
+      }
+      $this->db->insert_batch('detail_transaksi',$detail);
+    }
+
+    public function backFromStruk(){
+      $query = $this->db->query("TRUNCATE TABLE cart");
+      return $query;
+    }
+
+    public function dataCartBarcode(){
+      $query = $this->db->query("SELECT * FROM cart c LEFT JOIN barang b ON b.kode = c.kode GROUP BY c.kode");
+      return $query->result_array();
     }
 
 }

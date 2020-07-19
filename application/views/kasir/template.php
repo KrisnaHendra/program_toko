@@ -177,7 +177,7 @@
                                 </div>
                                 <!-- END Activity -->
 
-                            
+
                             </div>
                             <!-- END Overview Tab -->
 
@@ -200,9 +200,9 @@
                                     <hr>
                                     <!-- END Stats -->
 
-                                   
 
-                                 
+
+
                                 </div>
                             </div>
                             <!-- END Sales Tab -->
@@ -231,7 +231,7 @@
                 <div class="content-header bg-white-5">
                     <!-- Logo -->
                     <a class="font-w600 text-dual" href="<?= base_url('kasir/transaksi') ?>">
-                        <i class="fa fa-circle-notch text-light"></i>
+                        <i class="fa fa-store"></i>
                         <span class="smini-hide">
                             <span class="font-w700 font-size-h5">Cahaya</span> <span class="font-w400">Titan</span>
                         </span>
@@ -252,7 +252,7 @@
                                     <span>Default</span>
                                     <i class="fa fa-circle text-default"></i>
                                 </a>
-                               
+
                             </div>
                         </div>
                         <!-- END Themes -->
@@ -277,10 +277,16 @@
                                 <i class="nav-main-link-icon si si-basket-loaded"></i>
                                 <span class="nav-main-link-name">Transaksi</span>
                             </a>
-                        </li>
+                    </li>
+                    <!-- <li class="nav-main-item">
+                            <a class="nav-main-link active" href="<?= base_url('transaksi/trans_otomatis') ?>">
+                                <i class="nav-main-link-icon si si-basket-loaded"></i>
+                                <span class="nav-main-link-name">Transaksi Otomatis</span>
+                            </a>
+                    </li> -->
                     <li class="nav-main-item">
                             <a class="nav-main-link active" href="<?= base_url('kasir/transaksi_do') ?>">
-                                <i class="nav-main-link-icon si si-basket-loaded"></i>
+                                <i class="nav-main-link-icon fa fa-shopping-basket"></i>
                                 <span class="nav-main-link-name">Transaksi DO</span>
                             </a>
                         </li>
@@ -290,14 +296,14 @@
                                 <span class="nav-main-link-name">Data Barang</span>
                             </a>
                         </li>
-                       
+
                         <li class="nav-main-item">
                             <a class="nav-main-link active" href="<?= base_url('kasir/history') ?>">
                                 <i class="nav-main-link-icon si si-control-rewind"></i>
                                 <span class="nav-main-link-name">History Transaksi</span>
                             </a>
                         </li>
-                    
+
                     </ul>
                 </div>
                 <!-- END Side Navigation -->
@@ -342,7 +348,7 @@
                         <!-- END Open Search Section -->
 
                         <!-- Search Form (visible on larger screens) -->
-                        
+
                         <!-- END Search Form -->
                     </div>
                     <!-- END Left Section -->
@@ -362,7 +368,7 @@
                                 </div>
                                 <div class="p-2">
                                     <h5 class="dropdown-header text-uppercase">User Options</h5>
-                                   
+
                                     <a class="dropdown-item d-flex align-items-center justify-content-between" href="<?= base_url('kasir/profile') ?>">
                                         <span>Profile</span>
                                         <span>
@@ -370,10 +376,10 @@
                                             <i class="si si-user ml-1"></i>
                                         </span>
                                     </a>
-                                  
+
                                     <div role="separator" class="dropdown-divider"></div>
                                     <h5 class="dropdown-header text-uppercase">Actions</h5>
-                                    
+
                                     <a class="dropdown-item d-flex align-items-center justify-content-between" href="<?= base_url('auth/logout') ?>">
                                         <span>Log Out</span>
                                         <i class="si si-logout ml-1"></i>
@@ -389,7 +395,7 @@
                                 <i class="si si-basket-loaded"></i>
                                 <span class="badge badge-primary badge-pill"><?= $this->cart->total_items() ?></span>
                             </button>
-                          
+
                         </div>
                         <!-- END Notifications Dropdown -->
 

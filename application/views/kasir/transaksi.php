@@ -1,18 +1,18 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
 <div class="content">
 <div class="row">
 <div class="col-md-7" style="background-color: #f0f0f0;">
 <div class="block" style="background-color: #f0f0f0;">
-                                <div class="block-header" >
-                                    <h3 class="block-title">TRANSAKSI</h3>
+                                <div class="block-header bg-info" >
+                                    <h3 class="block-title text-white"><i class="fa fa-shopping-cart"></i> TRANSAKSI <small class="text-white"><?= date('d F Y') ?></small></h3>
                                     <div class="block-options">
                                         <div class="block-options-item">
-                                            <b style="color: red;">Total Barang : <?= $this->db->count_all('barang') ?></b>
+                                            <b class="badge badge-danger">Total Barang : <?= $this->db->count_all('barang') ?></b>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="block-content">
-                                    <table class="table table-vcenter js-dataTable-full-pagination">
+                                <div class="block-content bg-white">
+                                    <table class="table table-sm table-vcenter js-dataTable-full-pagination">
                                         <thead>
                                             <tr style="background-color: #78acff; color:white;">
                                                 <th class="text-center" style="width: 50px;">#</th>
@@ -25,7 +25,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                           
+
                                         <?php $no=1; foreach($barang as $b): ?>
                                             <tr>
                                                 <th class="text-center" scope="row"><?= $no++ ?></th>
@@ -60,41 +60,43 @@
                                                 </td> -->
                                             </tr>
                                             <?php endforeach; ?>
-                                            
-                                            
+
+
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>             
+                            </div>
 </div>
 <div class="col-md-5">
 <form action="<?= base_url('kasir/simpan_transaksi') ?>" method="POST">
 
-<div class="card mb-2">
-  <div class="card-header bg-primary text-light">
-   <i class="fa fa-fw fa-sticky-note"></i> Informasi Nota
+<div class="block mb-2">
+  <div class="block-header bg-primary text-light">
+    <div class="block-title">
+      <i class="fa fa-fw fa-sticky-note"></i> Informasi Nota
+    </div>
   </div>
-  <div class="card-body">
-  <table>
+  <div class="block-content">
+  <table class="mb-2">
     <tr>
         <td>No. Nota </td>
         <td class="pl-1 pr-1">: </td>
-        <td><input type="text" name="kode" class="font-weight-bold" value="INV<?= time() ?>" style="width:100%; background: #e6e6e6; border:1px solid #e6e6e6;" required readonly></td>
+        <td><input type="text" name="kode" class="font-weight-bold form-control form-control-sm" value="INV<?= time() ?>" style="width:117%; background: #e6e6e6; border:1px solid #e6e6e6;" required readonly></td>
     </tr>
     <tr>
         <td>Tanggal </td>
         <td class="pl-1 pr-1">: </td>
-        <td><input type="text" value="<?= date('d M Y') ?>" style="width:100%; background: #e6e6e6; border:1px solid #e6e6e6;" required readonly></td>
+        <td><input type="text" class="form-control form-control-sm" value="<?= date('d M Y') ?>" style="width:117%; background: #e6e6e6; border:1px solid #e6e6e6;" required readonly></td>
     </tr>
     <tr>
         <td>Kasir </td>
         <td class="pl-1 pr-1">: </td>
-        <td><input type="text" name="nama_kasir" class="font-weight-bold" value="<?= $this->session->userdata('nama') ?>" style="width:100%; background: #e6e6e6; border:1px solid #e6e6e6;" required readonly></td>
+        <td><input type="text" name="nama_kasir" class="font-weight-bold form-control form-control-sm" value="<?= $this->session->userdata('nama') ?>" style="width:117%; background: #e6e6e6; border:1px solid #e6e6e6;" required readonly></td>
     </tr>
     <tr>
         <td>Nama Pelanggan </td>
         <td class="pl-1 pr-1">: </td>
-        <td><input type="text" name="pembeli" class="" style="width:100%;" value="UMUM" required></td>
+        <td><input type="text" name="pembeli" class="form-control form-control-sm" style="width:117%;" value="Umum" required></td>
     </tr>
   </table>
     <!-- <blockquote class="blockquote mb-0">
@@ -103,7 +105,7 @@
     </blockquote> -->
   </div>
 </div>
-<table class="table table-vcenter">
+<table class="table table-sm bg-white table-vcenter">
     <thead>
         <tr style="background-color: #389fff; color: white;">
             <th>Nama</th>
@@ -118,7 +120,7 @@
     <?php if($this->cart->total_items()>0){?>
     <div class="row">
     <div class="col-md-1">
-    <a href="<?= base_url('kasir/hapus'); ?>" class="btn btn-sm btn-warning mb-2 mr-2"><i class="fa fa-fw fa-trash-alt" style="color:white;"></i></a>
+    <a href="<?= base_url('kasir/hapus'); ?>" class="btn btn-sm btn-warning mb-2 mr-2" data-toggle="tooltip" title="Kosongkan"><i class="fa fa-fw fa-trash-alt" style="color:white;"></i></a>
     </div>
     <div class="col-md-1">
     <!-- <i href="<?= base_url('kasir/print'); ?>" target="_blank" class="btn btn-sm btn-primary mb-2 mr-2" onClick="return confirm('Anda Yakin ingin cetak struk?')"><i class="fa fa-fw fa-print" style="color:white;"></i></a> -->
@@ -133,8 +135,8 @@
       </div>
     </div>
     </div>
-    
-   
+
+
     <?php foreach($this->cart->contents() as $items): ?>
         <input type="hidden" name="id_barang[]" value="<?=$items['id']?>">
 		<input type="hidden" name="rowid[]" value="<?=$items['rowid']?>">
@@ -144,12 +146,12 @@
         <td class="text-center"><input type="text" name="qty[]" value="<?= $items['qty'] ?>" style="width:40px;" class="text-center"></td>
         <td class="text-center"><?= number_format($items['price']*$items['qty']) ?></td>
         <td>
-        <a href="<?= base_url('kasir/hapus_cart/') ?><?= $items['rowid'] ?>" class="btn btn-sm btn-danger"><i class="fa fa-fw fa-trash"></i> </a></td>
+        <a href="<?= base_url('kasir/hapus_cart/') ?><?= $items['rowid'] ?>" class="btn btn-sm btn-danger"><i class="fa fa-fw fa-times-circle"></i> </a></td>
         </tr>
     <?php endforeach; ?>
-        <tr class="table table-hover">
+        <tr class="table table-hover bg-white">
         <td></td>
-        <input type="hidden" name="total" value="<?= $this->cart->total(); ?>"> 
+        <input type="hidden" name="total" value="<?= $this->cart->total(); ?>">
         <td colspan="4" class="text-right"><b> Total : Rp. <?= number_format($this->cart->total()); ?></b></td>
         </tr>
     <?php }else {?>
@@ -167,7 +169,7 @@
 <?= $this->session->flashdata('notif') ?>
 </div>
 </div>
-                
+
 
 <script>
 	function myFunction(){

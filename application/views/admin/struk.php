@@ -33,7 +33,7 @@
             <td><h2 class="pl-2 pr-2">:</h2></td>
             <td><h2><?php
                     date_default_timezone_set('Asia/Jakarta');
-                    echo date('d-M-Y H:i');?></h2></td>
+                    echo date('d F Y H:i');?></h2></td>
         </tr>
         <tr>
             <td><h2> Nama Pelanggan</h2></td>
@@ -43,7 +43,7 @@
     </table>
     <!-- <h5>==================================================================================</h5> -->
     <hr style="border:1px solid black">
-    <table class="table table-bordered">
+    <table class="table table-sm table-bordered">
         <tr class="text-center">
             <th style="width:30%;"><h1>Nama Barang</h1></th>
             <th style="width:25%;"><h1>Harga</h1></th>
@@ -58,12 +58,12 @@
             <td><p style="font-size:35px;">Rp. <?= number_format($items['price']*$items['qty']) ?></p></td>
         </tr>
         <?php endforeach;?>
-        
+
         <tr class="text-right">
             <td colspan="4"><h1>Total : Rp. <?= number_format($this->cart->total()) ?></h1></td>
         </tr>
         <tr class="text-right">
-        
+
             <td colspan="4"><h1>Bayar : Rp. <?= number_format($bayar); ?></h1></td>
         </tr>
         <tr class="text-right">
@@ -75,7 +75,7 @@
     <hr style="border:1px solid black">
     <h2 class="text-center">Barang yang sudah dibeli tidak dapat ditukar/dikembalikan</h2><br>
     <h1 class="text-center">~ TERIMA KASIH ~</h1>
-    
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

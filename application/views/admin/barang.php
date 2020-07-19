@@ -1,27 +1,33 @@
 <div class="content">
 
 <div class="block">
-                        <div class="block-header">
-                            <h3 class="block-title">Tabel Barang - <small>Cahaya Titan</small></h3>
+                        <div class="block-header bg-dark">
+                            <h3 class="block-title text-white"><i class="fa fa-box"></i> Tabel Barang - <small class="text-white">Cahaya Titan</small> (<?= $this->db->count_all('barang') ?> Barang)</h3>
+                            <div class="block-options">
+                              <!-- <h5 class="font-weight-bold m-0 btn btn-sm pt-0 pb-0 btn-primary">Total : </h5> -->
+                              <a href="<?=base_url('barang/print_barang')?>" data-toggle="tooltip" title="PDF" class="btn btn-sm pt-0 pb-0 btn-primary" target="_blank"><i class="fa fa-file-export"></i> PDF</a>
+                              <a href="<?=base_url('barang/export')?>" data-toggle="tooltip" title="Excel" class="btn btn-sm pt-0 pb-0 btn-success" onClick="return confirm('Convert data barang ke excel?')"><i class="fa fa-file-excel"></i> EXCEL</a>
+                            </div>
                         </div>
                         <div class="block-content block-content-full">
-                            <a href="<?=base_url('barang/print_barang')?>" class="btn btn-primary mb-2 mr-2 offset-md-3 col-md-3" target="_blank"><i class="fa fa-file-export"></i> PDF</a>
-                            <a href="<?=base_url('barang/export')?>" class="btn btn-success mb-2 mr-2 col-md-3" onClick="return confirm('Convert data barang ke excel?')"><i class="fa fa-file-excel"></i> EXCEL</a>
+                          <div class="text-center">
+
+                          </div>
                             <!-- <a href="<?=base_url('laporan')?>" class="btn btn-sm btn-warning" target="_blank">Coba</a> -->
                             <?=$this->session->flashdata('notif')?>
                             <?=form_error('kode', '<h6 class="alert alert-danger text-center"><i class="fa fa-times-circle"></i> ', '</h6>');?>
                             <!-- DataTables init on table by adding .js-dataTable-buttons class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _es6/pages/be_tables_datatables.js -->
-                            <table class="table table-bordered table-striped table-hover table-vcenter js-dataTable-full-pagination">
+                            <table class="table table-striped table-hover table-vcenter js-dataTable-full-pagination">
                             <!-- <table class="table table-bordered table-striped table-hover table-vcenter js-dataTable-buttons"> -->
                                 <thead>
-                                    <tr class="bg-info" style="background-color: #5c80d1; color: white;">
+                                    <tr class="bg-secondary" style="background-color: #5c80d1; color: white;">
                                         <th class="text-center" style="width: 50px;">NO</th>
-                                        <th class="" style="20%">Barang</th>
+                                        <th class="" style="wifth:30%">Barang</th>
                                         <th style="width:8%;">Kode</th>
-                                        <th class="d-none d-sm-table-cell text-center" style="width: 10%;">Keterangan</th>
+                                        <th class="d-none d-sm-table-cell text-center" style="width: 10%;">Ket</th>
                                         <th class="d-none d-sm-table-cell text-center" style="width: 10%;">STOK</th>
-                                        <th class="d-none d-sm-table-cell text-center" style="width: 15%;">Harga Jual</th>
-                                        <th class="d-none d-sm-table-cell text-center" style="width: 15%;">Harga DO</th>
+                                        <th class="d-none d-sm-table-cell text-center" style="width: 13%;">Harga Jual</th>
+                                        <th class="d-none d-sm-table-cell text-center" style="width: 13%;">Harga DO</th>
                                         <th class="text-center" style="width: 15%;">Updated</th>
                                         <th class="text-center" style="width: 13%;">Aksi</th>
                                     </tr>
@@ -44,7 +50,7 @@
                                             <?php } else if ($b['stok'] < 10) {?>
                                                     <span class="btn btn-sm btn-secondary"><?=$b['stok']?></span>
                                             <?php } else {?>
-                                                    <span class="btn btn-sm btn-primary"><?=$b['stok']?></span>
+                                                    <span class="btn btn-sm btn-info"><?=$b['stok']?></span>
                                             <?php }?>
                                         </td>
                                         <td class="text-center">
@@ -54,10 +60,10 @@
                                             Rp. <?=number_format($b['harga_do'])?>
                                         </td>
                                         <td class="text-center">
-                                            <em class="text-muted font-size-sm text-center"><?=date('d M Y', $b['updated'])?></em>
+                                            <em class="text-muted font-size-sm text-center"><?=date('d/m/Y', $b['updated'])?></em>
                                         </td>
                                         <td class="text-center">
-                                            <a href="#modal-update<?=$b['id_barang'];?>" class="btn btn-sm btn-warning" data-toggle="modal" data-toggle="tooltip" title="Edit Barang"><i class="fa fa-fw fa-edit"></i></a>
+                                            <a href="#modal-update<?=$b['id_barang'];?>" class="btn btn-sm btn-success" data-toggle="modal" data-toggle="tooltip" title="Edit Barang"><i class="fa fa-fw fa-edit"></i></a>
                                             <a href="<?=base_url('barang/hapus_barang')?>/<?=$b['id_barang']?>" class="btn btn-sm btn-danger" onClick="return confirm('Anda Yakin?')" data-toggle="tooltip" title="Hapus Barang"><i class="fa fa-fw fa-trash"></i></a>
                                         </td>
                                     </tr>

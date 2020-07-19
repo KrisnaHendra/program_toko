@@ -11,6 +11,7 @@
                                 </button>
                             </div>
                         </div>
+                        <hr class="m-0">
                         <div class="block-content">
                         <?=$this->session->flashdata('notif');?>
                         <?=form_error('nama', '<h6 class="alert alert-danger text-center"><i class="fa fa-user-times"></i> ', '</h6>');?>

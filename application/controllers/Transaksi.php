@@ -34,6 +34,9 @@ class Transaksi extends CI_Controller
         $data['avg'] = $this->avg();
         $data['title'] = 'History Transaksi';
         $data['konten'] = 'admin/history_transaksi';
+        $data['tot_transaksi'] = $this->db->query("SELECT COUNT(id_transaksi) as total FROM transaksi")->result_array();
+        $data['tot_pendapatan'] = $this->db->query("SELECT SUM(total) as pendapatan FROM transaksi")->result_array();
+        // $data['tot_transaksi'] = $this->db->query("SELECT COUNT(id) as total FROM transaksi")->result_array();
         $this->load->view('admin/template', $data);
     }
 
@@ -194,6 +197,7 @@ class Transaksi extends CI_Controller
                     'rowid' => $this->input->post('rowid')[$i],
                     'qty' => $this->input->post('qty')[$i],
                 );
+                // print_r($data);die;
                 $this->cart->update($data);
             }
             redirect('transaksi/transaksi_do');
@@ -260,12 +264,107 @@ class Transaksi extends CI_Controller
         $this->load->view('admin/template', $data);
     }
 
-    public function trans_telur()
-    {
-        $data = [
-            'harga' => $this->input->post('harga'),
-        ];
-        var_dump($data);
+
+    public function trans_otomatis(){
+      $data['data'] = $this->db->get_where('user', ['nama' => $this->session->userdata('nama')])->row_array();
+      $data['title'] = 'Transaction';
+      $data['sum'] = $this->sum();
+      $data['avg'] = $this->avg();
+      $data['konten'] = 'admin/transaksi_otomatis';
+      // Olah Transaksi Barcode
+      $data['view'] = $this->db->query("SELECT * FROM cart c LEFT JOIN barang b ON b.kode = c.kode GROUP BY c.kode")->result_array();
+      $data['total'] = $this->db->query("SELECT SUM(subtotal) as total FROM cart")->result_array();
+      $this->load->view('admin/template',$data);
     }
 
+    public function transaksiBarcode(){
+      $barcode = $this->db->query("SELECT kode FROM barang")->result_array();
+      $listKode = [];
+      foreach ($barcode as $key => $value) {
+        $listKode[$key] = $value['kode'];
+      }
+      $array = implode(',',$listKode);
+      // $this->form_validation->set_rules('kode','Kode','trim|required|in_list[01]');
+      $this->form_validation->set_rules('kode','Kode','trim|required|numeric|is_unique[cart.kode]|in_list['.$array.']',[
+        'numeric' => 'Kode Barcode Salah!',
+        'is_unique' => 'Barang sudah masuk dalam keranjang',
+        'in_list' => 'Kode Barcode Tidak Terdaftar!'
+      ]);
+
+      if($this->form_validation->run()==FALSE){
+        $this->session->set_flashdata('swal','swal("Kode Barcode Salah!");');
+        $this->trans_otomatis();
+      }else{
+        // print_r($this->input->post('kode'));die;
+        $kode = $this->input->post('kode');
+        $query = $this->db->query("SELECT * FROM barang WHERE kode = ".$kode."")->result_array();
+        $getData = [];
+        foreach($query as $key => $value){
+          $getData['harga'] = $value['harga_jual'];
+        }
+        $data = [
+          'kode' => $this->input->post('kode'),
+          'harga' => $getData['harga'],
+          'jumlah' => 1,
+          'subtotal' => $getData['harga']
+        ];
+        $this->db->insert('cart',$data);
+        redirect('transaksi/trans_otomatis');
+      }
+    }
+
+    public function deleteCartBarcode($id){
+      $this->db->query("DELETE FROM cart WHERE id = '$id'");
+      redirect('transaksi/trans_otomatis');
+    }
+
+    public function deleteAllCart(){
+      $this->db->query("TRUNCATE TABLE cart");
+      redirect('transaksi/trans_otomatis');
+    }
+
+    public function saveCartBarcode(){
+      if ($this->input->post('update')) {
+          foreach($this->input->post('id') as $key =>$value){
+            $data[] = [
+              'id' => $this->input->post('id')[$key],
+              'harga' => $this->input->post('harga')[$key],
+              'jumlah' => $this->input->post('jumlah')[$key],
+              'subtotal' => ($this->input->post('harga')[$key])*$this->input->post('jumlah')[$key]
+            ];
+          }
+          $this->db->update_batch('cart',$data,'id');
+          redirect('transaksi/trans_otomatis');
+      } elseif ($this->input->post('print')) {
+          if($this->db->count_all('cart')>0){
+          $kode = $this->input->post('kode');
+          $pembeli = $this->input->post('pembeli');
+          $catatan = $this->input->post('catatan');
+          // print_r($kode);die;
+          $id = $this->trans->simpan_cart_barcode($kode, $pembeli);
+          $data['kode'] = $this->input->post('kode');
+          $data['pembeli'] = $this->input->post('pembeli');
+          $data['catatan'] = $this->input->post('catatan');
+          $data['data'] = $this->trans->dataCartBarcode();
+          $data['allTotal'] = $this->db->query("SELECT SUM(subtotal) as total FROM cart")->result_array();
+          $this->load->view('admin/strukBarcode', $data, false);
+        }else{
+          $this->session->set_flashdata('notif','<div class="alert alert-danger d-flex align-items-center justify-content-between" role="alert">
+                                        <div class="flex-fill mr-3">
+                                            <p class="mb-0"><b>Error! </b> Keranjang masih kosong</p>
+                                        </div>
+                                        <div class="flex-00-auto">
+                                            <i class="fa fa-fw fa-times-circle"></i>
+                                        </div>
+                                    </div>');
+          redirect('transaksi/trans_otomatis');
+        }
+      }
+    }
+
+    public function backFromStruk(){
+      $this->trans->backFromStruk();
+      redirect('transaksi/trans_otomatis');
+    }
+// end
 }
