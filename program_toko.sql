@@ -24,10 +24,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `barang`
+-- Struktur dari tabel `barang` asline barang_s
 --
 
-CREATE TABLE `barang` (
+CREATE TABLE `barangss` (
   `id_barang` int(11) NOT NULL,
   `kode` varchar(128) DEFAULT NULL,
   `nama_barang` varchar(128) NOT NULL,
